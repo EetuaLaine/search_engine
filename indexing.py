@@ -51,8 +51,6 @@ def read_indices_from_json(indices_path=None):
         return None
 
 
-# TODO: Take in arguments and perform either indexing or index retrieval with specified methods.
-#  Store functions in dict.
 def main(**kwargs):
     indexing_functions = {"bag_of_words": compute_indices}
     index_reading_functions = {"json": read_indices_from_json}
@@ -60,12 +58,13 @@ def main(**kwargs):
     args = SimpleNamespace(**kwargs)
     # Get parameters from args.
     action = args.action
-    indexing_method = args.indexing_method
-    pdf_document_directory = args.pdf_document_directory
+    if action == "write_indices":
+        indexing_method = args.indexing_method
+        pdf_document_directory = args.pdf_document_directory
+        indexing_function = indexing_functions[indexing_method]
     index_path = args.index_path
     index_storing_format = args.index_storing_format
     # Choose indexing functions.
-    indexing_function = indexing_functions[indexing_method]
     index_reading_function = index_reading_functions[index_storing_format]
 
     if action == "read_indices":

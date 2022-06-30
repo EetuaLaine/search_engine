@@ -5,7 +5,8 @@ from utils.preprocessing import preprocess_document
 from argparse import ArgumentParser
 
 
-def most_similar_documents(query_string, compute_similarity, get_indices, n=3,
+def most_similar_documents(query_string, compute_similarity, get_indices,
+                           n=3, get_embeddings=None, embedding_function=None,
                            indices_path="./test_data/indices.json"):
 
     preprocessed_query = preprocess_document(query_string)
@@ -13,9 +14,14 @@ def most_similar_documents(query_string, compute_similarity, get_indices, n=3,
 
     indices = get_indices(indices_path=indices_path)
 
-    # TODO: Pass the data to compute_similarity as *args or **kwargs so you can use vector embeddings
-    #  as well as the indices depending on the similarity function
-    similarities = [compute_similarity(index["index"], query_index) for index in indices]
+    if get_embeddings is None or embedding_function is None:
+        similarities = [compute_similarity(index["index"], query_index) for index in indices]
+    else:
+        embeddings = get_embeddings()
+        embedded_query = embedding_function(query_string)
+        similarities = [compute_similarity(index["index"], query_index,
+                                           document_embedding=embeddings[i],
+                                           sentence_embedding=embedded_query) for i, index in enumerate(indices)]
 
     zipped = sorted([(idx, sim) for idx, sim in enumerate(similarities)], key=lambda t: -t[1])
 
@@ -24,15 +30,18 @@ def most_similar_documents(query_string, compute_similarity, get_indices, n=3,
     return [indices[idx]["file_name"] for idx in indices_to_return]
 
 
-# TODO: implement this so that it calls most_similar_documents with functions determined by kwargs,
-#  put the functions as values in a dictionary where keys are names.
 def main(**kwargs):
     args = SimpleNamespace(**kwargs)
     similarity_functions = {"lexical": index_similarity}
     index_getter_functions = {"json": read_indices_from_json}
-    get_similarity = similarity_functions[args.similarity_func]
     query_string = args.query
     index_source = args.index_source
+    similarity_func = args.similarity_func
+    get_similarity = similarity_functions[similarity_func]
+    get_indices = index_getter_functions[index_source]
+    n = args.n
+    index_path = args.index_path
+    return most_similar_documents(query_string, get_similarity, get_indices, n=n, indices_path=index_path)
 
 
 if __name__ == "__main__":
@@ -52,6 +61,10 @@ if __name__ == "__main__":
     arg_parser.add_argument("--index_path",
                             type=str,
                             help="Path to the indices. If the index source is json, this should be a local filepath.")
+    arg_parser.add_argument("--n",
+                            type=int,
+                            default=3,
+                            help="How many documents to return at most.")
 
     parsed_args = arg_parser.parse_args()
-    main(**vars(parsed_args))
+    print(main(**vars(parsed_args)))

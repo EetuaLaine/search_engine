@@ -2,11 +2,11 @@ import numpy as np
 from numpy.linalg import norm
 
 
-def cosine_similarity(x1, x2):
+def cosine_similarity(x1, x2, **kwargs):
     return np.dot(x1, x2) / (norm(x1) * norm(x2))
 
 
-def index_similarity(idx1, idx2):
+def index_similarity(idx1, idx2, **kwargs):
     sum_1 = sum(idx1.values())
     sum_2 = sum(idx2.values())
 
