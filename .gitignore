@@ -94,3 +94,4 @@ dmypy.json
 
 .idea/
 embedding_models/*
+test_data/*.json
