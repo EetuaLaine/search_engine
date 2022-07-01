@@ -19,3 +19,9 @@ $ python3 indexing.py --action read_indices --index_storing_format json --index_
 ```console
 $ python3 similar_documents.py --similarity_func lexical --query "Which bank offers the best mortgage" --index_source json --index_path ./test_data/indices.json --n 3
 ```
+
+### Load sentence embedding model from Huggingface and save to the repository
+
+```console
+$ python3 load_embedding_model.py
+```

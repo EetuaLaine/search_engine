@@ -71,7 +71,7 @@ def main(**kwargs):
         return index_reading_function(index_path)
     elif action == "write_indices":
         indexing_function(pdf_document_directory, index_storing_format)
-        return None
+        return "Indices successfully computed and written to file."
     else:
         raise ValueError("action has invalid value")
 
