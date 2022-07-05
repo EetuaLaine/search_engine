@@ -14,10 +14,10 @@ $ python3 indexing.py --action write_indices --indexing_method bag_of_words --in
 $ python3 indexing.py --action read_indices --index_storing_format json --index_path ./test_data/indices.json
 ```
 
-### Get 3 most similar documents to a query using just the indices obtained from a json file.
+### Get 3 most similar documents to a query using an average score of the semantic and lexical similarity functions.
 
 ```console
-$ python3 similar_documents.py --similarity_func lexical --query "Which bank offers the best mortgage" --index_source json --index_path ./test_data/indices.json --n 3
+$ python3 similar_documents.py --similarity_func combined --query "Which bank offers the best mortgage" --index_source json --index_path ./test_data/indices.json --n 3 --embeddings_source json --embeddings_path ./test_data/embeddings.json --embedding_model_path ./embedding_models/embedding_model --embedding_function_type sentence-transformers
 ```
 
 ### Load sentence embedding model from Huggingface and save to the repository

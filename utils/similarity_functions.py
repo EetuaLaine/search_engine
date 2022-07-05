@@ -33,8 +33,9 @@ def semantic_similarity(document_embeddings, query_embedding, k=5, **kwargs):
     return sum(sorted(similarities)[-k:]) / k
 
 
-# TODO: This function needs to take all the parameters required by index similarity and
-#  semantic similarity, compute them both and return some kind of weighted average.
-#  Consider scaling the cosine similarity to [0, 1].
-def voted_similarity(**kwargs):
-    pass
+def combined_similarity(document_index, query_index, document_embedding, sentence_embedding):
+    index_sim = index_similarity(document_index, query_index)
+    semantic_sim = (semantic_similarity(document_embedding, sentence_embedding) + 1) / 2
+    result = (index_sim + semantic_sim) / 2
+    return result
+

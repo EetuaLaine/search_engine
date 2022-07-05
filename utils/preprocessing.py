@@ -37,3 +37,12 @@ def clean_document_for_embedding(pdf_path):
         cleaned = cleaned.replace("  ", " ")
         result.append(cleaned)
     return result
+
+
+def clean_query_for_embedding(query):
+    cleaned = query.replace("-\n", "")
+    cleaned = cleaned.replace("\n", " ")
+    cleaned = cleaned.replace("\x0c", "")
+    cleaned = cleaned.replace("\t", " ")
+    cleaned = cleaned.replace("  ", " ")
+    return [cleaned]

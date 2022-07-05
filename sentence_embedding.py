@@ -1,9 +1,21 @@
 from types import SimpleNamespace
 from sentence_transformers import SentenceTransformer
 from argparse import ArgumentParser
-from utils.preprocessing import clean_document_for_embedding
+from utils.preprocessing import clean_document_for_embedding, clean_query_for_embedding
 import json
 import os
+
+
+def get_embeddings(path_to_files):
+    with open(path_to_files) as f:
+        data = json.load(f)
+    return [elem["embeddings"] for elem in data]
+
+
+def embed_query(query_string: str, embedding_model):
+    preprocessed_query = clean_query_for_embedding(query_string)
+    sentence_embeddings = embedding_model.encode(preprocessed_query)
+    return sentence_embeddings[0].tolist()
 
 
 def compute_embeddings(path_to_files, embedding_model, output_path="./test_data/embeddings.json"):
