@@ -35,7 +35,7 @@ def most_similar_documents(query_string, compute_similarity, get_indices,
     return [indices[idx]["file_name"] for idx in indices_to_return]
 
 
-def main(**kwargs):
+def main(embedding_model=None, **kwargs):
     args = SimpleNamespace(**kwargs)
     similarity_functions = {"lexical": index_similarity, "combined": combined_similarity}
     index_getter_functions = {"json": read_indices_from_json}
@@ -55,9 +55,7 @@ def main(**kwargs):
     embedding_function = embedding_functions[embedding_function_type]
     embedding_model_path = args.embedding_model_path
 
-    embedding_model = None
-
-    if embedding_model_path is not None:
+    if embedding_model is None and embedding_model_path is not None:
         embedding_model = SentenceTransformer(embedding_model_path)
 
     return most_similar_documents(query_string, get_similarity,

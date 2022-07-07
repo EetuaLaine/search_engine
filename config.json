@@ -1,0 +1,9 @@
+{
+  "similarity_func": "combined",
+  "index_source": "json",
+  "index_path": "./test_data/indices.json",
+  "embeddings_source": "json",
+  "embeddings_path": "./test_data/embeddings.json",
+  "embedding_model_path": "./embedding_models/embedding_model",
+  "embedding_function_type": "sentence-transformers"
+}
