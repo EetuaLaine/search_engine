@@ -24,6 +24,7 @@ model = None
 
 try:
     model = SentenceTransformer(config["embedding_model_path"])
+    print("Successful model download.")
 except Exception as e:
     print("Exception occurred when loading model:", e)
 
