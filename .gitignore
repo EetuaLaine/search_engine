@@ -93,4 +93,3 @@ venv.bak/
 dmypy.json
 
 .idea/
-test_data/*.json
