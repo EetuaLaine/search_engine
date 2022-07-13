@@ -20,14 +20,16 @@ jobs:
       run: docker run -d -p 8001:8001 search_api
     - name: Wait until API is up and running
       run: until grep -q "healthy" <<< "`curl http://0.0.0.0:8001/health_check || true`"; do sleep 5; done
+    - name: Install pytest
+      run: pip3 install pytest
       
   test:
     
     runs-on: ubuntu-latest
+
+    needs: [build]
     
     steps:
     - uses: actions/checkout@v3
-    - name: Install pytest
-      run: pip3 install pytest
     - name: Run tests
       run: python3 -m pytest
