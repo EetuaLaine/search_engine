@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build -t search_api .
+    - name: Run the container
+      run: docker run -d -p 8001:8001 search_api
+    - name: Wait until API is up and running
+      run: until grep -q "healthy" <<< "`curl http://0.0.0.0:8001/health_check || true`"; do sleep 5; done
+      
+  test:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install pytest
+      run: pip3 install pytest
+    - name: Run tests
+      run: pytest
