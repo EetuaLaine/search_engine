@@ -43,5 +43,10 @@ def get_most_similar_documents(query: Query) -> dict:
     return {"file_names": get_similar_documents(embedding_model=model, **kwargs)}
 
 
+@app.get("/health_check", status_code=200)
+def health_check():
+    return {"status": "healthy"}
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8001, log_level="debug")
