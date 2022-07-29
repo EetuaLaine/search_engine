@@ -1,5 +1,5 @@
 {
-  "_name_or_path": "./embedding_models/embedding_model/",
+  "_name_or_path": "/home/eetu/.cache/torch/sentence_transformers/sentence-transformers_paraphrase-MiniLM-L6-v2/",
   "architectures": [
     "BertModel"
   ],

@@ -25,3 +25,10 @@ $ python3 similar_documents.py --similarity_func combined --query "Which bank of
 ```console
 $ python3 load_embedding_model.py
 ```
+
+### Build and run API as a Docker image
+
+```console
+$ docker build -t search_api .
+$ docker run -d -p 8001:8001 search_api
+```
